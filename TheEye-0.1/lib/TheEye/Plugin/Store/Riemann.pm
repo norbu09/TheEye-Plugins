@@ -1,19 +1,18 @@
-package TheEye::Plugin::Store::Collectd;
+package TheEye::Plugin::Store::Riemann;
 
-use 5.010;
 use Mouse::Role;
-use Collectd::Unixsock;
+use Riemann::Client;
 
-# ABSTRACT: Collectd plugin for TheEye
+# ABSTRACT: Riemann plugin for TheEye
 #
-our $VERSION = '0.2'; # VERSION
+our $VERSION = '0.1'; # VERSION
 
-has 'collectd_socket' => (
+has 'riemann' => (
     is       => 'rw',
-    isa      => 'Str',
+    isa      => 'Riemann::Client',
     required => 1,
     lazy     => 1,
-    default  => '/var/run/collectd-unixsock'
+    default  => sub { Riemann::Client->new( host => 'localhost', port => 5555)},
 );
 
 
@@ -21,21 +20,26 @@ around 'save' => sub {
     my $orig = shift;
     my ( $self, $tests ) = @_;
 
-    return unless -S $self->collectd_socket;
-    my $sock = Collectd::Unixsock->new( $self->collectd_socket );
+    my @events;
     foreach my $result (@{$tests}) {
 
         my @path = split(/\//, $result->{file});
         my @file = split(/\./, pop(@path));
 
-        $sock->putval(
+        my $event = {
+            state => 'ok',
             host   => $self->hostname,
-            plugin => $file[0],
-            type   => 'latency',
+            service => $file[0],
             time   => $result->{time},
-            values => [ $result->{delta}, $result->{passed}, $result->{failed} ],
-        );
+            metric   => $result->{delta},
+            description => $result->{passed} .' passed and '. $result->{failed} .' failed',
+        };
+        if($result->{failed}){
+            $event->{state} = 'critical';
+        }
+        push(@events, $event);
     }
+    $self->riemann->send(@events);
     return;
 };
 
@@ -50,11 +54,11 @@ __END__
 
 =head1 NAME
 
-TheEye::Plugin::Store::Collectd - Collectd plugin for TheEye
+TheEye::Plugin::Store::Riemann - Riemann plugin for TheEye
 
 =head1 VERSION
 
-version 0.2
+version 0.1
 
 =head1 AUTHOR
 

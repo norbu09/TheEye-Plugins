@@ -11,7 +11,7 @@ license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
-name: TheEye-Plugins
+name: TheEye
 requires:
   Carp: 0
   Collectd::Unixsock: 0
@@ -25,4 +25,4 @@ resources:
   bugtracker: https://github.com/norbu09/TheEye-Plugins/issues
   homepage: https://github.com/norbu09/TheEye-Plugins/wiki
   repository: git://github.com/norbu09/TheEye-Plugins.git
-version: 0.2
+version: 0.1

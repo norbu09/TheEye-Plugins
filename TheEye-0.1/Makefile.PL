@@ -16,10 +16,10 @@ my %WriteMakefileArgs = (
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => "6.30"
   },
-  "DISTNAME" => "TheEye-Plugins",
+  "DISTNAME" => "TheEye",
   "EXE_FILES" => [],
   "LICENSE" => "perl",
-  "NAME" => "TheEye::Plugins",
+  "NAME" => "TheEye",
   "PREREQ_PM" => {
     "Carp" => 0,
     "Collectd::Unixsock" => 0,
@@ -30,7 +30,7 @@ my %WriteMakefileArgs = (
     "Riemann::Client" => 0
   },
   "TEST_REQUIRES" => {},
-  "VERSION" => "0.2",
+  "VERSION" => "0.1",
   "test" => {
     "TESTS" => "t/*.t"
   }

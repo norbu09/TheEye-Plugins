@@ -7,7 +7,7 @@ use Carp;
 
 # ABSTRACT: Graphite plugin for TheEye
 #
-our $VERSION = '0.2'; # VERSION
+our $VERSION = '0.1'; # VERSION
 
 has 'graphite_host' => (
     is      => 'rw',
@@ -84,7 +84,7 @@ TheEye::Plugin::Store::Graphite - Graphite plugin for TheEye
 
 =head1 VERSION
 
-version 0.2
+version 0.1
 
 =head1 AUTHOR
 
